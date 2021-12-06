@@ -8,10 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class FeignExceptionHandler {
 
-    @ExceptionHandler(FeignException.BadRequest.class)  
+    @ExceptionHandler(FeignException.BadRequest.class)
     public String handleFeignStatusException(FeignException e, HttpServletResponse response) {
         response.setStatus(e.status());
-        return e.contentUTF8(); 
+        return e.contentUTF8();
+    }
+
+    @ExceptionHandler(java.net.ConnectException.class)
+    public String handleFeignRetryableExceptionException(FeignException e, HttpServletResponse response) {
+        return "internal microservice down";
     }
 
 }
